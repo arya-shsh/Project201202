@@ -12,6 +12,7 @@ YELLOW = (252, 247, 135)
 
 
 
+
 max_w = 600
 max_h = 400
 min_r = 10
@@ -54,13 +55,22 @@ while True:
         x = random.randint(0, max_w)
         y = random.randint(0, max_h)
         r = random.randint(min_r, max_r)
-        circles.append((x,y,r)) # сохраняем созданные круги в списке
-        count += 1
+        red = random.randint(0, 255)
+        green = random.randint(0, 255)
+        blue = random.randint(0, 255)
+        color = (red, green, blue)
+        peresechenie = False
+        for i in circles:
+            if (x-i[0])**2 + (y-i[1])**2< (r+i[2])**2:
+                peresechenie = True
+        if not peresechenie:
+            circles.append((x,y,r, color)) # сохраняем созданные круги в списке
+            count += 1
     for i in circles:
         if (press[0]-i[0])**2+(press[1]-i[1])**2<= i[2]**2: #проверяем принадлежность координат нажатия координатам круга
             circles.remove(i)
             count-=1 #вместо осчезнувшего круга добавляем новый
     for i in circles:
-        pygame.draw.circle(sc, YELLOW, (i[0], i[1]), i[2]) #рисуем кружочки
+        pygame.draw.circle(sc, i[3], (i[0], i[1]), i[2]) #рисуем кружочки
 
     pygame.display.update()
