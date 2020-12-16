@@ -13,6 +13,16 @@ def draw_smile(sc,c): #рисуем смайлик
     pygame.draw.circle(sc, color, ((c.x - c.r//2), (c.y - c.r//2)), c.r//6) #рисуем глаза левый
     pygame.draw.circle(sc, color, ((c.x + c.r//2), (c.y - c.r//2)), c.r//6) #рисуем глаза правый
     pygame.draw.arc(sc,color,((c.x - 2*c.r//3),(c.y - c.r//6),(4*c.r//3),(c.r)),math.pi,2*math.pi,3) #рисуем улыбку
+def reflection(c): #отражение от стенок
+    global max_w, max_h
+    if c.x - c.r <= 0:
+        c.vx = 1
+    if c.y - c.r <= 0:
+        c.vy = 1
+    if c.x + c.r >= max_w:
+        c.vx = -1
+    if c.y + c.r >= max_h:
+        c.vy = -1
 # определяем константы,
 # классы и функции
 FPS = 60
@@ -26,6 +36,8 @@ max_circles = 13
 count = 0
 circles = []
 press = (0,0)
+speed = 2
+counter = 0
 # инициация,
 # создаем объектов
 pygame.init() #инициализация модуля игры
@@ -58,7 +70,7 @@ while True:#основной цикл игры
         blue = random.randint(0, 255)
         color = (red, green, blue)
         peresechenie = False
-        new = Circle(x,y,r,color,vx,vy)
+        new = Сircle(x,y,r,color,vx,vy)
         for i in circles:
             if new.peresechenie(i):
                 peresechenie = True
@@ -69,7 +81,13 @@ while True:#основной цикл игры
         if (press[0]-i.x)**2+(press[1]-i.y)**2<= i.r**2: #проверяем принадлежность координат нажатия координатам круга
             circles.remove(i)
             count-=1 #вместо осчезнувшего круга добавляем новый
+    if counter % speed == 0: #скорость движения
+        for i in circles: #добавили движение
+            i.x += i.vx
+            i.y += i.vy
+            reflection(i)
     for i in circles:
         draw_smile(sc,i)
     pygame.display.update()
+
 
