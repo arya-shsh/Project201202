@@ -4,8 +4,6 @@ class Circle():
         self.y = y
         self.r = r
         self.color = color
-        self.vx = vx
-        self.vy = vy
     def peresechenie(self,other):
         if (self.x - other.x)**2 + (self.y - other.y)**2<=(self.r + other.r)**2:
             return True
