@@ -23,6 +23,8 @@ def reflection(c): #отражение от стенок
         c.vx = -1
     if c.y + c.r >= max_h:
         c.vy = -1
+def draw_rect(sc,i): #рисуем прямоуг
+    pygame.draw.rect(sc,i.color,(i.x,i.y,i.w,i.h))
 # определяем константы,
 # классы и функции
 FPS = 60
@@ -35,9 +37,16 @@ max_r = 60
 max_circles = 13
 count = 0
 circles = []
+rects = []
 press = (0,0)
-speed = 2
+speed = 2 #cкорость,чем меньше значение, тем быстрее движении
 counter = 0
+max_rect = 10
+min_w = 14
+min_h = 20
+max_wr = 35
+max_hr = 48
+count_rect = 0
 # инициация,
 # создаем объектов
 pygame.init() #инициализация модуля игры
@@ -70,13 +79,27 @@ while True:#основной цикл игры
         blue = random.randint(0, 255)
         color = (red, green, blue)
         peresechenie = False
-        new = Сircle(x,y,r,color,vx,vy)
+        new = Circle(x,y,r,color,vx,vy)
         for i in circles:
             if new.peresechenie(i):
                 peresechenie = True
         if not peresechenie:
             circles.append(new) # сохраняем созданные круги в списке
             count += 1
+    while count_rect < max_rect: #создаем прямоуг в список
+        x = random.randint(0, max_w)
+        y = random.randint(0, max_h)
+        w = random.randint(min_w, max_wr)
+        h = random.randint(min_h,max_hr)
+        vx = random.randint(-1,1)
+        vy = random.randint(-1,1)
+        red = random.randint(0, 255)
+        green = random.randint(0, 255)
+        blue = random.randint(0, 255)
+        color = (red, green, blue)
+        new = Rect(x,y,w,h,color,vx,vy)
+        rects.append(new)
+        count_rect += 1
     for i in circles: #проверяем нажатие на круг
         if (press[0]-i.x)**2+(press[1]-i.y)**2<= i.r**2: #проверяем принадлежность координат нажатия координатам круга
             circles.remove(i)
@@ -88,6 +111,7 @@ while True:#основной цикл игры
             reflection(i)
     for i in circles:
         draw_smile(sc,i)
+    for i in rects:
+        draw_rect(sc,i)
     pygame.display.update()
-
 
