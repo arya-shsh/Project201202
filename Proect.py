@@ -29,7 +29,7 @@ def draw_rect(sc,i): #рисуем прямоуг
     blue = random.randint(0, 255)
     color = (red, green, blue)
     pygame.draw.rect(sc,i.color,(i.x,i.y,i.w,i.h))
-    pygame.draw.aalines(sc, color, False,[[(i.x + i.w//8),(i.y + 3*i.h//4)], [(i.x + i.w//4),(i.y + 5*i.h//8)],[(i.x + 3*i.w//8),(i.y + 3*i.h//4)],[(i.x + i.w//2),(i.y + 5*i.h//8)],[(i.x + 5*i.w//8),(i.y + 3*i.h//4)],[(i.x + 3*i.w//4),(i.y + 5*i.h//8)],[(i.x + 7*i.w//8),(i.y + 3*i.h//4)]],10)
+    pygame.draw.aalines(sc, color, False,[[(i.x + i.w//8),(i.y + 3*i.h//4)], [(i.x + i.w//4),(i.y + 5*i.h//8)],[(i.x + 3*i.w//8),(i.y + 3*i.h//4)],[(i.x + i.w//2),(i.y + 5*i.h//8)],[(i.x + 5*i.w//8),(i.y + 3*i.h//4)],[(i.x + 3*i.w//4),(i.y + 5*i.h//8)],[(i.x + 7*i.w//8),(i.y + 3*i.h//4)]],20)
     pygame.draw.rect(sc,BLACK,((i.x + i.w//8),(i.y + i.h//4),i.w//8,i.h//8))
     pygame.draw.rect(sc,BLACK,((i.x + 6*i.w//8),(i.y + i.h//4),i.w//8,i.h//8))
 def reflection_rect(c):#отражение прямоуг от краёв
@@ -43,7 +43,6 @@ def reflection_rect(c):#отражение прямоуг от краёв
         c.vy = -1
 FPS = 60
 RED = (255,0,0)
-PINK = (255, 110, 199)
 YELLOW = (252, 247, 135)
 BLACK = (0,0,0)
 LIGHT_PINK = (249, 89, 224)
@@ -59,7 +58,7 @@ circles = []
 rects = []
 press = (0,0)
 counter = 0 
-speed = 2 #чем меньше значение тем быстрее
+speed = 2 
 max_wr = 50
 max_hr = 50
 count_rect = 0
@@ -91,7 +90,7 @@ while in_menu: #цикл пока находимся в меню
         if i.type == pygame.MOUSEBUTTONDOWN:
             press = i.pos
     clock.tick(FPS)
-    f1 = pygame.font.Font('C:\Windows\Fonts\RockwellNova.ttf', 26) #шрифт
+    f1 = pygame.font.Font('C:\WINDOWS\FONTS\ROCKWELLNOVA.TTF', 26) #шрифт
     text3 = f1.render('Правила игры!', True, (200, 80, 254)) #создает объект
     text1 = f1.render('Играть', True, (26, 215, 250)) #создает объект
     text2 = f1.render('Выход', True, (144, 249, 89)) #создает объект
@@ -113,6 +112,23 @@ while not game_over:#основной цикл игры
     time -= 1
     if time == 0:
         game_over =True
+        while game_over:#основной цикл игры
+                clock.tick(FPS)
+                for i in pygame.event.get(): # цикл для обработки событий
+                    if i.type == pygame.QUIT:
+                        sys.exit()
+                    if i.type == pygame.MOUSEBUTTONDOWN:
+                        press = i.pos
+                clock.tick(FPS)
+                f3 = pygame.font.Font('C:\WINDOWS\FONTS\ALGER.TTF', 36) #шрифт
+                text4 = f3.render(str(score), True,(122,1,178)) #создает объект
+                text7 = f1.render('Время истекло! Игра окончена:(', True, (122,1,178)) #создает объект
+                text8 = f1.render('Ваш счёт:', True,  (122,1,178)) #создает объект
+                sc.fill(YELLOW)
+                sc.blit(text4, (410, 153))#отображение на экране
+                sc.blit(text7, (150, 100))#отображение на экране
+                sc.blit(text8, (270, 153))#отображение на экране
+                pygame.display.update()
     clock.tick(FPS)
     for i in pygame.event.get(): # цикл для обработки событий
         if i.type == pygame.QUIT:
@@ -166,6 +182,23 @@ while not game_over:#основной цикл игры
             rects.remove(i)
             count_rect -= 1
             game_over = True
+            while game_over:#основной цикл игры
+                clock.tick(FPS)
+                for i in pygame.event.get(): # цикл для обработки событий
+                    if i.type == pygame.QUIT:
+                        sys.exit()
+                    if i.type == pygame.MOUSEBUTTONDOWN:
+                        press = i.pos
+                clock.tick(FPS)
+                f3 = pygame.font.Font('C:\WINDOWS\FONTS\ALGER.TTF', 36) #шрифт
+                text4 = f3.render(str(score), True,(122,1,178)) #создает объект
+                text7 = f1.render('Увы,вы проиграли!', True, (122,1,178)) #создает объект
+                text8 = f1.render('Ваш счёт:', True,  (122,1,178)) #создает объект
+                sc.fill(YELLOW)
+                sc.blit(text4, (420, 153))#отображение на экране
+                sc.blit(text7, (220, 100))#отображение на экране
+                sc.blit(text8, (270, 153))#отображение на экране
+                pygame.display.update()
     press = -100,-100
     if counter % speed == 0: #скорость движения
         for i in circles: #добавили движение
@@ -185,7 +218,7 @@ while not game_over:#основной цикл игры
     text3 = f3.render(str(time//FPS), True, ORANGE) #создает объект
     sc.blit(text3, (650, 50))#отображение на экране
     text4 = f3.render(str(score), True, ORANGE) #создает объект
-    sc.blit(text4, (658, 127))#отображение на экране
+    sc.blit(text4, (656, 127))#отображение на экране
     text5 = f4.render('Счёт', True, BLACK) #создает объект
     sc.blit(text5, (645, 103))#отображение на экране
     text6 = f4.render('Время', True, BLACK) #создает объект
