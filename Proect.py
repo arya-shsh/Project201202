@@ -5,7 +5,6 @@ import random
 from shapes import *
 import math
 def draw_smile(sc,c): #рисуем смайлик
-    global BLACK
     red = random.randint(0, 255)
     green = random.randint(0, 255)
     blue = random.randint(0, 255)
@@ -25,7 +24,14 @@ def reflection(c): #отражение от стенок
     if c.y + c.r >= max_h:
         c.vy = -1
 def draw_rect(sc,i): #рисуем прямоуг
+    red = random.randint(0, 255)
+    green = random.randint(0, 255)
+    blue = random.randint(0, 255)
+    color = (red, green, blue)
     pygame.draw.rect(sc,i.color,(i.x,i.y,i.w,i.h))
+    pygame.draw.aalines(sc, color, False,[[(i.x + i.w//8),(i.y + 3*i.h//4)], [(i.x + i.w//4),(i.y + 5*i.h//8)],[(i.x + 3*i.w//8),(i.y + 3*i.h//4)],[(i.x + i.w//2),(i.y + 5*i.h//8)],[(i.x + 5*i.w//8),(i.y + 3*i.h//4)],[(i.x + 3*i.w//4),(i.y + 5*i.h//8)],[(i.x + 7*i.w//8),(i.y + 3*i.h//4)]],10)
+    pygame.draw.rect(sc,BLACK,((i.x + i.w//8),(i.y + i.h//4),i.w//8,i.h//8))
+    pygame.draw.rect(sc,BLACK,((i.x + 6*i.w//8),(i.y + i.h//4),i.w//8,i.h//8))
 def reflection_rect(c):#отражение прямоуг от краёв
     if c.x == 0:
         c.vx = 1
@@ -36,6 +42,7 @@ def reflection_rect(c):#отражение прямоуг от краёв
     if c.y + c.h >= max_h:
         c.vy = -1
 FPS = 60
+RED = (255,0,0)
 PINK = (255, 110, 199)
 YELLOW = (252, 247, 135)
 BLACK = (0,0,0)
@@ -46,7 +53,7 @@ max_w = 600
 max_h = 400
 min_r = 10
 max_r = 60
-max_circles = 20
+max_circles = 30
 count = 0
 circles = []
 rects = []
@@ -56,9 +63,9 @@ speed = 2 #чем меньше значение тем быстрее
 max_wr = 50
 max_hr = 50
 count_rect = 0
-max_rect = 15
-min_w = 30
-min_h = 40
+max_rect = 20
+min_w = 40
+min_h = 50
 score = 0
 game_over = False
 in_menu = True
@@ -159,7 +166,7 @@ while not game_over:#основной цикл игры
             rects.remove(i)
             count_rect -= 1
             game_over = True
-        press = -100,-100
+    press = -100,-100
     if counter % speed == 0: #скорость движения
         for i in circles: #добавили движение
             i.x += i.vx
@@ -173,5 +180,15 @@ while not game_over:#основной цикл игры
         draw_smile(sc,i)
     for i in rects:
         draw_rect(sc,i)
+    f3 = pygame.font.Font('C:\WINDOWS\FONTS\ALGER.TTF', 36) #шрифт
+    f4 = pygame.font.Font('C:\WINDOWS\FONTS\COURBD.TTF', 20) #шрифт
+    text3 = f3.render(str(time//FPS), True, ORANGE) #создает объект
+    sc.blit(text3, (650, 50))#отображение на экране
+    text4 = f3.render(str(score), True, ORANGE) #создает объект
+    sc.blit(text4, (658, 127))#отображение на экране
+    text5 = f4.render('Счёт', True, BLACK) #создает объект
+    sc.blit(text5, (645, 103))#отображение на экране
+    text6 = f4.render('Время', True, BLACK) #создает объект
+    sc.blit(text6, (635, 30))#отображение на экране
     pygame.display.update()
 print(score)
