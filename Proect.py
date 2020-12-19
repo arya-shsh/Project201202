@@ -5,6 +5,7 @@ import random
 from shapes import *
 import math
 def draw_smile(sc,c): #рисуем смайлик
+    global BLACK
     red = random.randint(0, 255)
     green = random.randint(0, 255)
     blue = random.randint(0, 255)
@@ -34,11 +35,14 @@ def reflection_rect(c):#отражение прямоуг от краёв
         c.vx = -1
     if c.y + c.h >= max_h:
         c.vy = -1
-# определяем константы,
-# классы и функции
 FPS = 60
 PINK = (255, 110, 199)
 YELLOW = (252, 247, 135)
+BLACK = (0,0,0)
+LIGHT_PINK = (249, 89, 224)
+LIGHT_BLUE = (137, 239, 253)
+ORANGE = (255,150,100)
+COLORS = [PINK,YELLOW,BLACK,LIGHT_PINK,LIGHT_BLUE,ORANGE]
 max_w = 600
 max_h = 400
 min_r = 10
@@ -48,35 +52,62 @@ count = 0
 circles = []
 rects = []
 press = (0,0)
-speed = 2 #cкорость,чем меньше значение, тем быстрее движении
-counter = 0
-max_rect = 10
-min_w = 34
-min_h = 34
-max_wr = 50
-max_hr = 50
+counter = 0 
+speed = 2 #чем меньше значение тем быстрее
+max_wr = 35
+max_hr = 48
 count_rect = 0
+max_rect = 10
+min_w = 14
+min_h = 20
+score = 0
+game_over = False
+in_menu = True
+time = 40*FPS #столько кадров игра
 # инициация,
 # создаем объектов
 pygame.init() #инициализация модуля игры
-sc = pygame.display.set_mode((max_w, max_h))
+pygame.font.init() #инициализация шрифтов
+sc = pygame.display.set_mode((max_w+100, max_h))
 clock = pygame.time.Clock()
 # для отображения до цикла
 # какиех-то объектов, обновляем экран
 pygame.display.update() #первоначальное обновление экрана
 # главный цикл
-while True:#основной цикл игры
-    # задержка
-    clock.tick(FPS)
-    # цикл для обработки событий
+while in_menu: #цикл пока находимся в меню
     for i in pygame.event.get():
+        if i.type == pygame.QUIT:#обработка выхода
+            sys.exit()
+        if i.type == pygame.MOUSEBUTTONDOWN:
+            press = i.pos
+    clock.tick(FPS)
+    f1 = pygame.font.Font('C:\Windows\Fonts\RockwellNova.ttf', 26) #шрифт
+    text3 = f1.render('Правила игры!', True, (144, 249, 89)) #создает объект
+    text1 = f1.render('Играть', True, (144, 249, 89)) #создает объект
+    text2 = f1.render('Выход', True, (144, 249, 89)) #создает объект
+    sc.fill(LIGHT_BLUE)
+    pygame.draw.rect(sc,LIGHT_PINK,(103,293,110,50)) #прямоугольник кнопки
+    pygame.draw.rect(sc,LIGHT_PINK,(472,293,100,50)) #прямоугольник кнопки
+    sc.blit(text1, (110, 300))#отображение на экране
+    sc.blit(text2, (480, 300))#отображение на экране
+    sc.blit(text3, (240, 15))#отображение на экране
+    if 103<=press[0]<=103+110 and 293<= press[1]<=293+50: #нажатие на кнопки в меню
+        in_menu = False
+    if 472<=press[0]<=472+100 and 293<= press[1]<=293+50:
+        in_menu = False
+        game_over = True
+    pygame.display.update()
+while not game_over:#основной цикл игры
+    clock.tick(FPS)
+    for i in pygame.event.get(): # цикл для обработки событий
         if i.type == pygame.QUIT:
             sys.exit()
         if i.type == pygame.MOUSEBUTTONDOWN:
             press = i.pos
     # изменяем объекты
     # обновляем экран
-    sc.fill(PINK) # заливаем экран розовым
+    # заливаем экран розовым
+    sc.fill(PINK)
     while count< max_circles:#добавляем круги в список
         x = random.randint(0, max_w)
         y = random.randint(0, max_h)
@@ -100,7 +131,7 @@ while True:#основной цикл игры
         y = random.randint(0, max_h)
         w = random.randint(min_w, max_wr)
         h = random.randint(min_h,max_hr)
-        vx = random.randint(-1,1)
+        vx = random.randint (-1,1)
         vy = random.randint(-1,1)
         red = random.randint(0, 255)
         green = random.randint(0, 255)
