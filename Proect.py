@@ -25,6 +25,15 @@ def reflection(c): #отражение от стенок
         c.vy = -1
 def draw_rect(sc,i): #рисуем прямоуг
     pygame.draw.rect(sc,i.color,(i.x,i.y,i.w,i.h))
+def reflection_rect(c):#отражение прямоуг от краёв
+    if c.x == 0:
+        c.vx = 1
+    if c.y == 0:
+        c.vy = 1
+    if c.x + c.w >= max_w:
+        c.vx = -1
+    if c.y + c.h >= max_h:
+        c.vy = -1
 # определяем константы,
 # классы и функции
 FPS = 60
@@ -42,10 +51,10 @@ press = (0,0)
 speed = 2 #cкорость,чем меньше значение, тем быстрее движении
 counter = 0
 max_rect = 10
-min_w = 14
-min_h = 20
-max_wr = 35
-max_hr = 48
+min_w = 34
+min_h = 34
+max_wr = 50
+max_hr = 50
 count_rect = 0
 # инициация,
 # создаем объектов
@@ -104,14 +113,21 @@ while True:#основной цикл игры
         if (press[0]-i.x)**2+(press[1]-i.y)**2<= i.r**2: #проверяем принадлежность координат нажатия координатам круга
             circles.remove(i)
             count-=1 #вместо осчезнувшего круга добавляем новый
+    for i in rects: #проверяем нажатие на прямоугольник
+        if (i.x <= press[0]<= i.x + i.w) and (i.y <= press[1] <= i.y + i.h):
+            rects.remove(i)
+            count_rect -= 1
     if counter % speed == 0: #скорость движения
         for i in circles: #добавили движение
             i.x += i.vx
             i.y += i.vy
             reflection(i)
+        for i in rects:
+            i.x += i.vx
+            i.y += i.vy
+            reflection_rect(i)
     for i in circles:
         draw_smile(sc,i)
     for i in rects:
         draw_rect(sc,i)
     pygame.display.update()
-
