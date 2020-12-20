@@ -86,7 +86,6 @@ def reflection_rect(c):#отражение прямоуг от краёв
 
 def game_over_handler(reason, clock, sc, f1, score):
     """Метод обработки события 'игра закончена'
-
     :param reason: переменная, задающая причину окончания игры
     :param clock: переменная для времени
     :param sc: отображение рабочей области
@@ -111,7 +110,6 @@ def game_over_handler(reason, clock, sc, f1, score):
 
 def main():
     """Основная функция
-
     :return: None
     """
     press = (0,0)
@@ -160,20 +158,22 @@ def main():
         pravila6 = f1.render('Если ты понимаешь, что сессия сложна и ты не готов,', True, PURLE)
         pravila7 = f1.render('то не время играть в игрушки - кликай на обижульки', True, PURLE)
         pravila8 = f1.render('и отправляйся зубрить билеты, завершая игру!', True, PURLE)
+        text10 = f1.render('Когда игра закончится, нажми "пробел",чтобы выйти.', True,PURLE) #создает объект
         sc.blit(star,(0,0))
         pygame.draw.rect(sc,PINK,(70,330,115,50)) #прямоугольник кнопки
         pygame.draw.rect(sc,PINK,(540,330,105,50)) #прямоугольник кнопки
         sc.blit(text1, (80, 335))#отображение на экране
         sc.blit(text2, (549, 335))#отображение на экране
-        sc.blit(text3, (240, 15))
-        sc.blit(pravila, (25, 55))
-        sc.blit(pravila1, (25, 85))
-        sc.blit(pravila3, (25, 115))
-        sc.blit(pravila4, (25, 145))
-        sc.blit(pravila5, (25, 175))
-        sc.blit(pravila6, (25, 205))
-        sc.blit(pravila7, (25, 235))
-        sc.blit(pravila8, (25, 265))
+        sc.blit(text3, (240, 10))
+        sc.blit(pravila, (25, 45))
+        sc.blit(pravila1, (25, 75))
+        sc.blit(pravila3, (25, 105))
+        sc.blit(pravila4, (25, 135))
+        sc.blit(pravila5, (25, 165))
+        sc.blit(pravila6, (25, 195))
+        sc.blit(pravila7, (25, 225))
+        sc.blit(pravila8, (25, 255))
+        sc.blit(text10, (25, 285))
         pygame.display.update()
     while not game_over: #основной цикл игры
         clock.tick(FPS)
