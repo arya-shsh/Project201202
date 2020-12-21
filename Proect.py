@@ -5,7 +5,6 @@ import random
 from shapes import *
 import math
 
-random.seed(100)
 
 max_w = 600
 max_h = 400
@@ -27,16 +26,16 @@ max_rect = 20
 circles = []
 rects = []
 
-def draw_smile(sc,c): #рисуем смайлик
+def draw_smile(sc,c, red, green, blue): #рисуем смайлик
     """Метод для прорисовки круглых смайлов в игре
     :param sc: отображение рабочей области
     :param c: переменная, которая отражает конкретный круг
     :return: None
     """
-    red = random.randint(0, 255)
-    green = random.randint(0, 255)
-    blue = random.randint(0, 255)
     color = (red, green, blue)
+    for colors in color:
+        if 256 < colors < 0:
+            raise ValueError('Color shold be set in range 0-255')
     pygame.draw.circle(sc, c.color, (c.x, c.y), c.r) #рисуем кружочки
     pygame.draw.circle(sc, color, ((c.x - c.r//2), (c.y - c.r//2)), c.r//6) #рисуем глаза левый
     pygame.draw.circle(sc, color, ((c.x + c.r//2), (c.y - c.r//2)), c.r//6) #рисуем глаза правый
@@ -58,8 +57,9 @@ def reflection(c): #отражение от стенок
         c.vy = -1
 
 def draw_rect(sc,i): #рисуем прямоуг
-    """Метод для осуществления отржаения круглых смайлов от границ рабочей области
-    :param c: переменная, которая отражает конкретный круг
+    """Метод для прорисовки прямоугольных смайлов в игре
+    :param sc: отображение рабочей области
+    :param i: переменная, которая отражает конкретный прямоугольник
     :return: None
     """
     RED = (255,0,0)
@@ -70,9 +70,8 @@ def draw_rect(sc,i): #рисуем прямоуг
     pygame.draw.rect(sc,BLACK,((i.x + 6*i.w//8),(i.y + i.h//4),i.w//8,i.h//8))
 
 def reflection_rect(c):#отражение прямоуг от краёв
-    """Метод для прорисовки прямоугольных смайлов в игре
-    :param sc: отображение рабочей области
-    :param i: переменная, которая отражает конкретный прямоугольник
+    """Метод для осуществления отржаения прямоугльных смайлов от границ рабочей области
+    :param c: переменная, которая отражает конкретный прямоугольник
     :return: None
     """
     if c.x == 0:
@@ -84,7 +83,7 @@ def reflection_rect(c):#отражение прямоуг от краёв
     if c.y + c.h >= max_h:
         c.vy = -1
 
-def game_over_handler(reason, clock, sc, f1, score):
+def game_over_handler(reason, clock, pygame, sc, f1, score):
     """Метод обработки события 'игра закончена'
     :param reason: переменная, задающая причину окончания игры
     :param clock: переменная для времени
@@ -94,7 +93,7 @@ def game_over_handler(reason, clock, sc, f1, score):
     :return: None
     """
     clock.tick(FPS)
-    f3 = pygame.font.Font('C:\WINDOWS\FONTS\ALGER.TTF', 36) #шрифт
+    f3 = pygame.font.Font('C:\WINDOWS\FONTS\CAMBRIA.TTC', 26) #шрифт
     text4 = f3.render(str(score), True,LIGHT_PURLE) #создает объект
     text7 = f1.render(reason, True, LIGHT_PURLE) #создает объект
     text8 = f1.render('Ваш счёт:', True,  LIGHT_PURLE) #создает объект
@@ -139,12 +138,12 @@ def main():
     while in_menu: #цикл пока находимся в меню
         for i in pygame.event.get():
             if i.type == pygame.QUIT:#обработка выхода
-                sys.exit()
+                sys.exit(1)
         keys=pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             in_menu = False
         if keys[pygame.K_RIGHT]:
-            sys.exit()
+            sys.exit(1)
         clock.tick(FPS)
         f1 = pygame.font.Font('C:\WINDOWS\FONTS\CAMBRIA.TTC', 26) #шрифт
         text3 = f1.render('Правила игры!', True, PURLE) #создает объект
@@ -158,22 +157,20 @@ def main():
         pravila6 = f1.render('Если ты понимаешь, что сессия сложна и ты не готов,', True, PURLE)
         pravila7 = f1.render('то не время играть в игрушки - кликай на обижульки', True, PURLE)
         pravila8 = f1.render('и отправляйся зубрить билеты, завершая игру!', True, PURLE)
-        text10 = f1.render('Когда игра закончится, нажми "пробел",чтобы выйти.', True,PURLE) #создает объект
         sc.blit(star,(0,0))
-        pygame.draw.rect(sc,PINK,(70,330,115,50)) #прямоугольник кнопки
-        pygame.draw.rect(sc,PINK,(540,330,105,50)) #прямоугольник кнопки
-        sc.blit(text1, (80, 335))#отображение на экране
+        pygame.draw.rect(sc,PINK,(70,330,105,50)) #прямоугольник кнопки
+        pygame.draw.rect(sc,PINK,(540,330,100,50)) #прямоугольник кнопки
+        sc.blit(text1, (75, 335))#отображение на экране
         sc.blit(text2, (549, 335))#отображение на экране
-        sc.blit(text3, (240, 10))
-        sc.blit(pravila, (25, 45))
-        sc.blit(pravila1, (25, 75))
-        sc.blit(pravila3, (25, 105))
-        sc.blit(pravila4, (25, 135))
-        sc.blit(pravila5, (25, 165))
-        sc.blit(pravila6, (25, 195))
-        sc.blit(pravila7, (25, 225))
-        sc.blit(pravila8, (25, 255))
-        sc.blit(text10, (25, 285))
+        sc.blit(text3, (240, 15))
+        sc.blit(pravila, (25, 55))
+        sc.blit(pravila1, (25, 85))
+        sc.blit(pravila3, (25, 115))
+        sc.blit(pravila4, (25, 145))
+        sc.blit(pravila5, (25, 175))
+        sc.blit(pravila6, (25, 205))
+        sc.blit(pravila7, (25, 235))
+        sc.blit(pravila8, (25, 265))
         pygame.display.update()
     while not game_over: #основной цикл игры
         clock.tick(FPS)
@@ -181,11 +178,11 @@ def main():
         time -= 1
         if time == 0:
             game_over = True
-            game_over_handler('Время истекло! Игра окончена:(', clock,
+            game_over_handler('Время истекло! Игра окончена:(', clock, pygame,
                               sc, f1, score)
         for i in pygame.event.get(): # цикл для обработки событий
             if i.type == pygame.QUIT:
-                sys.exit()
+                sys.exit(1)
             if i.type == pygame.MOUSEBUTTONDOWN:
                 press = i.pos
         sc.blit(shine,(0,0))
@@ -235,7 +232,7 @@ def main():
                 rects.remove(i)
                 count_rect -= 1
                 game_over = True
-                game_over_handler('Увы,вы проиграли! Игра окончена:(', clock, sc, f1,
+                game_over_handler('Увы,вы проиграли!', clock, pygame, sc, f1,
                                   score)
         press = -100,-100
         if counter % speed == 0: #скорость движения
@@ -248,11 +245,11 @@ def main():
                 i.y += i.vy
                 reflection_rect(i)
         for i in circles:
-            draw_smile(sc,i)
+            draw_smile(sc,i,random.randint(0, 255),random.randint(0, 255),random.randint(0, 255))
         for i in rects:
             draw_rect(sc,i)
-        f3 = pygame.font.Font('C:\WINDOWS\FONTS\ALGER.TTF', 36) #шрифт
-        f4 = pygame.font.Font('C:\WINDOWS\FONTS\COURBD.TTF', 20) #шрифт
+        f3 = pygame.font.Font('C:\WINDOWS\FONTS\ALGER.TTF', 36)  # шрифт
+        f4 = pygame.font.Font('C:\WINDOWS\FONTS\COURBD.TTF', 20)  #шрифт  # шрифт
         text3 = f3.render(str(time//FPS), True, ORANGE) #создает объект
         sc.blit(text3, (650, 50))#отображение на экране
         text4 = f3.render(str(score), True, ORANGE) #создает объект
