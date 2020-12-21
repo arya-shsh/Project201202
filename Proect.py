@@ -93,8 +93,8 @@ def game_over_handler(reason, clock, pygame, sc, f1, score):
     :return: None
     """
     clock.tick(FPS)
-    f3 = pygame.font.Font('C:\WINDOWS\FONTS\CAMBRIA.TTC', 26) #шрифт
-    text4 = f3.render(str(score), True,LIGHT_PURLE) #создает объект
+    f1 = pygame.font.Font('C:\WINDOWS\FONTS\CAMBRIA.TTC', 26) #шрифт
+    text4 = f1.render(str(score), True,LIGHT_PURLE) #создает объект
     text7 = f1.render(reason, True, LIGHT_PURLE) #создает объект
     text8 = f1.render('Ваш счёт:', True,  LIGHT_PURLE) #создает объект
     sc.fill(YELLOW)
@@ -146,10 +146,10 @@ def main():
             sys.exit(1)
         clock.tick(FPS)
         f1 = pygame.font.Font('C:\WINDOWS\FONTS\CAMBRIA.TTC', 26) #шрифт
-        text3 = f1.render('Правила игры!', True, PURLE) #создает объект
-        text1 = f1.render('<Играть', True, (26, 215, 250)) #создает объект
-        text2 = f1.render('Выход>', True, (26, 215, 250)) #создает объект
-        pravila = f1.render('Игра была написана двумя уставшими девушками',True, PURLE)
+        text3 = f1.render('Правила игры!', True, PURLE)  # создает объект
+        text1 = f1.render('<Играть', True, (26, 215, 250))  # создает объект
+        text2 = f1.render('Выход>', True, (26, 215, 250))  # создает объект
+        pravila = f1.render('Игра была написана двумя уставшими девушками', True, PURLE)
         pravila1 = f1.render('в предсессионное время, поэтому правила просты.', True, PURLE)
         pravila3 = f1.render('Если тебе не хватает радостных эмоций, то', True, PURLE)
         pravila4 = f1.render('кликай на смайлики-улыбаки, набирая баллы, можешь,', True, PURLE)
@@ -157,20 +157,22 @@ def main():
         pravila6 = f1.render('Если ты понимаешь, что сессия сложна и ты не готов,', True, PURLE)
         pravila7 = f1.render('то не время играть в игрушки - кликай на обижульки', True, PURLE)
         pravila8 = f1.render('и отправляйся зубрить билеты, завершая игру!', True, PURLE)
-        sc.blit(star,(0,0))
-        pygame.draw.rect(sc,PINK,(70,330,105,50)) #прямоугольник кнопки
-        pygame.draw.rect(sc,PINK,(540,330,100,50)) #прямоугольник кнопки
-        sc.blit(text1, (75, 335))#отображение на экране
-        sc.blit(text2, (549, 335))#отображение на экране
-        sc.blit(text3, (240, 15))
-        sc.blit(pravila, (25, 55))
-        sc.blit(pravila1, (25, 85))
-        sc.blit(pravila3, (25, 115))
-        sc.blit(pravila4, (25, 145))
-        sc.blit(pravila5, (25, 175))
-        sc.blit(pravila6, (25, 205))
-        sc.blit(pravila7, (25, 235))
-        sc.blit(pravila8, (25, 265))
+        text10 = f1.render('Когда игра закончится, нажми "пробел",чтобы выйти.', True, PURLE)  # создает объект
+        sc.blit(star, (0, 0))
+        pygame.draw.rect(sc, PINK, (70, 330, 115, 50))  # прямоугольник кнопки
+        pygame.draw.rect(sc, PINK, (540, 330, 105, 50))  # прямоугольник кнопки
+        sc.blit(text1, (80, 335))  # отображение на экране
+        sc.blit(text2, (549, 335))  # отображение на экране
+        sc.blit(text3, (240, 10))
+        sc.blit(pravila, (25, 45))
+        sc.blit(pravila1, (25, 75))
+        sc.blit(pravila3, (25, 105))
+        sc.blit(pravila4, (25, 135))
+        sc.blit(pravila5, (25, 165))
+        sc.blit(pravila6, (25, 195))
+        sc.blit(pravila7, (25, 225))
+        sc.blit(pravila8, (25, 255))
+        sc.blit(text10, (25, 285))
         pygame.display.update()
     while not game_over: #основной цикл игры
         clock.tick(FPS)
@@ -232,7 +234,7 @@ def main():
                 rects.remove(i)
                 count_rect -= 1
                 game_over = True
-                game_over_handler('Увы,вы проиграли!', clock, pygame, sc, f1,
+                game_over_handler('Увы,вы проиграли! Игра окончена:(', clock, pygame, sc, f1,
                                   score)
         press = -100,-100
         if counter % speed == 0: #скорость движения
@@ -265,3 +267,4 @@ def main():
 if __name__ == "__main__":
     score = main()
     print(score)
+
